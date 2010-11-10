@@ -21,7 +21,6 @@
 #ifndef PARSE_SIMPLE_H
 #define PARSE_SIMPLE_H
 
-#include "parse_simple.h"
 #include <poker-eval/poker_defs.h>
 #include <assert.h>
 #include <string.h>
