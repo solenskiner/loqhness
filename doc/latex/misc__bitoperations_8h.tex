@@ -1,0 +1,128 @@
+\hypertarget{misc__bitoperations_8h}{
+\section{misc\_\-bitoperations.h File Reference}
+\label{misc__bitoperations_8h}\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}}
+}
+This graph shows which files directly or indirectly include this file:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{misc__bitoperations_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{misc__bitoperations_8h_aec77c58e5539c8e65add55cb11b4d21a}{bit\_\-get}(p, m)~((p) \& (m))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_a05adecac4f6f6e2d5e6bf43b496bbc9f}{bit\_\-set}(p, m)~((p) $|$ (m))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_a4befea8f39b82371375372c32827a577}{bit\_\-clear}(p, m)~((p) \& $\sim$(m))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_a5ddcbb8431d5cc348e62678304589ccd}{bit\_\-flip}(p, m)~((p) $^\wedge$ (m))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_ab716e3a1c0f63a37cbae6273ae055c09}{bit\_\-invert}(p)~($\sim$(p))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_ad27cc17b25bb93134368d5eb21126eae}{BIT}(x)~((unsigned int)0x01 $<$$<$ (x))
+\item 
+\#define \hyperlink{misc__bitoperations_8h_ad5a1789dbb5ecd4299f229858b4fd3cc}{BIT\_\-LONG}(x)~((unsigned long)0x00000001 $<$$<$ (x))
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{misc__bitoperations_8h_a64ba05cfcc8dc21b60efc4baccbe5e2a}{bit\_\-count} (int flag)
+\item 
+int \hyperlink{misc__bitoperations_8h_a621a0a5e6a19e382bc66c8e7d09979c5}{BITS} (int start, int end)
+\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{misc__bitoperations_8h_ad27cc17b25bb93134368d5eb21126eae}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!BIT@{BIT}}
+\index{BIT@{BIT}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{BIT}]{\setlength{\rightskip}{0pt plus 5cm}\#define BIT(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~((unsigned int)0x01 $<$$<$ (x))}}
+\label{misc__bitoperations_8h_ad27cc17b25bb93134368d5eb21126eae}
+\hypertarget{misc__bitoperations_8h_a4befea8f39b82371375372c32827a577}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-clear@{bit\_\-clear}}
+\index{bit\_\-clear@{bit\_\-clear}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-clear}]{\setlength{\rightskip}{0pt plus 5cm}\#define bit\_\-clear(
+\begin{DoxyParamCaption}
+\item[{}]{p, }
+\item[{}]{m}
+\end{DoxyParamCaption}
+)~((p) \& $\sim$(m))}}
+\label{misc__bitoperations_8h_a4befea8f39b82371375372c32827a577}
+\hypertarget{misc__bitoperations_8h_a5ddcbb8431d5cc348e62678304589ccd}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-flip@{bit\_\-flip}}
+\index{bit\_\-flip@{bit\_\-flip}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-flip}]{\setlength{\rightskip}{0pt plus 5cm}\#define bit\_\-flip(
+\begin{DoxyParamCaption}
+\item[{}]{p, }
+\item[{}]{m}
+\end{DoxyParamCaption}
+)~((p) $^\wedge$ (m))}}
+\label{misc__bitoperations_8h_a5ddcbb8431d5cc348e62678304589ccd}
+\hypertarget{misc__bitoperations_8h_aec77c58e5539c8e65add55cb11b4d21a}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-get@{bit\_\-get}}
+\index{bit\_\-get@{bit\_\-get}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-get}]{\setlength{\rightskip}{0pt plus 5cm}\#define bit\_\-get(
+\begin{DoxyParamCaption}
+\item[{}]{p, }
+\item[{}]{m}
+\end{DoxyParamCaption}
+)~((p) \& (m))}}
+\label{misc__bitoperations_8h_aec77c58e5539c8e65add55cb11b4d21a}
+\hypertarget{misc__bitoperations_8h_ab716e3a1c0f63a37cbae6273ae055c09}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-invert@{bit\_\-invert}}
+\index{bit\_\-invert@{bit\_\-invert}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-invert}]{\setlength{\rightskip}{0pt plus 5cm}\#define bit\_\-invert(
+\begin{DoxyParamCaption}
+\item[{}]{p}
+\end{DoxyParamCaption}
+)~($\sim$(p))}}
+\label{misc__bitoperations_8h_ab716e3a1c0f63a37cbae6273ae055c09}
+\hypertarget{misc__bitoperations_8h_ad5a1789dbb5ecd4299f229858b4fd3cc}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!BIT\_\-LONG@{BIT\_\-LONG}}
+\index{BIT\_\-LONG@{BIT\_\-LONG}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{BIT\_\-LONG}]{\setlength{\rightskip}{0pt plus 5cm}\#define BIT\_\-LONG(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~((unsigned long)0x00000001 $<$$<$ (x))}}
+\label{misc__bitoperations_8h_ad5a1789dbb5ecd4299f229858b4fd3cc}
+\hypertarget{misc__bitoperations_8h_a05adecac4f6f6e2d5e6bf43b496bbc9f}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-set@{bit\_\-set}}
+\index{bit\_\-set@{bit\_\-set}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-set}]{\setlength{\rightskip}{0pt plus 5cm}\#define bit\_\-set(
+\begin{DoxyParamCaption}
+\item[{}]{p, }
+\item[{}]{m}
+\end{DoxyParamCaption}
+)~((p) $|$ (m))}}
+\label{misc__bitoperations_8h_a05adecac4f6f6e2d5e6bf43b496bbc9f}
+
+
+\subsection{Function Documentation}
+\hypertarget{misc__bitoperations_8h_a64ba05cfcc8dc21b60efc4baccbe5e2a}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!bit\_\-count@{bit\_\-count}}
+\index{bit\_\-count@{bit\_\-count}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{bit\_\-count}]{\setlength{\rightskip}{0pt plus 5cm}int bit\_\-count (
+\begin{DoxyParamCaption}
+\item[{int}]{ flag}
+\end{DoxyParamCaption}
+)}}
+\label{misc__bitoperations_8h_a64ba05cfcc8dc21b60efc4baccbe5e2a}
+\hypertarget{misc__bitoperations_8h_a621a0a5e6a19e382bc66c8e7d09979c5}{
+\index{misc\_\-bitoperations.h@{misc\_\-bitoperations.h}!BITS@{BITS}}
+\index{BITS@{BITS}!misc_bitoperations.h@{misc\_\-bitoperations.h}}
+\subsubsection[{BITS}]{\setlength{\rightskip}{0pt plus 5cm}int BITS (
+\begin{DoxyParamCaption}
+\item[{int}]{ start, }
+\item[{int}]{ end}
+\end{DoxyParamCaption}
+)}}
+\label{misc__bitoperations_8h_a621a0a5e6a19e382bc66c8e7d09979c5}

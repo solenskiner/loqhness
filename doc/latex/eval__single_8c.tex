@@ -1,0 +1,79 @@
+\hypertarget{eval__single_8c}{
+\section{eval\_\-single.c File Reference}
+\label{eval__single_8c}\index{eval\_\-single.c@{eval\_\-single.c}}
+}
+{\ttfamily \#include $<$poker-\/eval/inlines/eval.h$>$}\par
+{\ttfamily \#include $<$poker-\/eval/inlines/eval\_\-type.h$>$}\par
+{\ttfamily \#include $<$poker-\/eval/poker\_\-defs.h$>$}\par
+{\ttfamily \#include $<$poker-\/eval/deck\_\-std.h$>$}\par
+{\ttfamily \#include \char`\"{}eval\_\-single.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}eval\_\-data.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}misc\_\-helpers.h\char`\"{}}\par
+Include dependency graph for eval\_\-single.c:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{eval__single_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{eval__single_8c_a9e60e355947a48a7c7a9d1c8789bd842}{evaluate\_\-hand} (StdDeck\_\-CardMask $\ast$hand, StdDeck\_\-CardMask $\ast$board)
+\item 
+float $\ast$ \hyperlink{eval__single_8c_ac9caa1418409256834907c5f43232486}{evaluate\_\-hand\_\-draws} (StdDeck\_\-CardMask $\ast$board, StdDeck\_\-CardMask $\ast$hand, int flags)
+\item 
+float $\ast$ \hyperlink{eval__single_8c_ad2c6bdf3a12996507c38bc8a73cdb195}{evaluate\_\-hands\_\-draws} (StdDeck\_\-CardMask $\ast$board, StdDeck\_\-CardMask $\ast$hand, int hands, int flags)
+\item 
+float $\ast$ \hyperlink{eval__single_8c_ab2f33fee5bd5da1e28fcfb25ca293dd2}{evaluate\_\-hands\_\-draws\_\-boards} (StdDeck\_\-CardMask $\ast$board, int boards, StdDeck\_\-CardMask $\ast$hand, int hands, int flags)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{eval__single_8c_a9e60e355947a48a7c7a9d1c8789bd842}{
+\index{eval\_\-single.c@{eval\_\-single.c}!evaluate\_\-hand@{evaluate\_\-hand}}
+\index{evaluate\_\-hand@{evaluate\_\-hand}!eval_single.c@{eval\_\-single.c}}
+\subsubsection[{evaluate\_\-hand}]{\setlength{\rightskip}{0pt plus 5cm}int evaluate\_\-hand (
+\begin{DoxyParamCaption}
+\item[{StdDeck\_\-CardMask $\ast$}]{ hand, }
+\item[{StdDeck\_\-CardMask $\ast$}]{ board}
+\end{DoxyParamCaption}
+)}}
+\label{eval__single_8c_a9e60e355947a48a7c7a9d1c8789bd842}
+\hypertarget{eval__single_8c_ac9caa1418409256834907c5f43232486}{
+\index{eval\_\-single.c@{eval\_\-single.c}!evaluate\_\-hand\_\-draws@{evaluate\_\-hand\_\-draws}}
+\index{evaluate\_\-hand\_\-draws@{evaluate\_\-hand\_\-draws}!eval_single.c@{eval\_\-single.c}}
+\subsubsection[{evaluate\_\-hand\_\-draws}]{\setlength{\rightskip}{0pt plus 5cm}float$\ast$ evaluate\_\-hand\_\-draws (
+\begin{DoxyParamCaption}
+\item[{StdDeck\_\-CardMask $\ast$}]{ board, }
+\item[{StdDeck\_\-CardMask $\ast$}]{ hand, }
+\item[{int}]{ flags}
+\end{DoxyParamCaption}
+)}}
+\label{eval__single_8c_ac9caa1418409256834907c5f43232486}
+\hypertarget{eval__single_8c_ad2c6bdf3a12996507c38bc8a73cdb195}{
+\index{eval\_\-single.c@{eval\_\-single.c}!evaluate\_\-hands\_\-draws@{evaluate\_\-hands\_\-draws}}
+\index{evaluate\_\-hands\_\-draws@{evaluate\_\-hands\_\-draws}!eval_single.c@{eval\_\-single.c}}
+\subsubsection[{evaluate\_\-hands\_\-draws}]{\setlength{\rightskip}{0pt plus 5cm}float$\ast$ evaluate\_\-hands\_\-draws (
+\begin{DoxyParamCaption}
+\item[{StdDeck\_\-CardMask $\ast$}]{ board, }
+\item[{StdDeck\_\-CardMask $\ast$}]{ hand, }
+\item[{int}]{ hands, }
+\item[{int}]{ flags}
+\end{DoxyParamCaption}
+)}}
+\label{eval__single_8c_ad2c6bdf3a12996507c38bc8a73cdb195}
+\hypertarget{eval__single_8c_ab2f33fee5bd5da1e28fcfb25ca293dd2}{
+\index{eval\_\-single.c@{eval\_\-single.c}!evaluate\_\-hands\_\-draws\_\-boards@{evaluate\_\-hands\_\-draws\_\-boards}}
+\index{evaluate\_\-hands\_\-draws\_\-boards@{evaluate\_\-hands\_\-draws\_\-boards}!eval_single.c@{eval\_\-single.c}}
+\subsubsection[{evaluate\_\-hands\_\-draws\_\-boards}]{\setlength{\rightskip}{0pt plus 5cm}float$\ast$ evaluate\_\-hands\_\-draws\_\-boards (
+\begin{DoxyParamCaption}
+\item[{StdDeck\_\-CardMask $\ast$}]{ board, }
+\item[{int}]{ boards, }
+\item[{StdDeck\_\-CardMask $\ast$}]{ hand, }
+\item[{int}]{ hands, }
+\item[{int}]{ flags}
+\end{DoxyParamCaption}
+)}}
+\label{eval__single_8c_ab2f33fee5bd5da1e28fcfb25ca293dd2}

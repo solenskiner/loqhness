@@ -1,0 +1,6 @@
+INSTALLATION
+============
+qmake
+make
+sudo make install
+

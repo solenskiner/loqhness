@@ -1,0 +1,119 @@
+\hypertarget{parse__simple_8c}{
+\section{parse\_\-simple.c File Reference}
+\label{parse__simple_8c}\index{parse\_\-simple.c@{parse\_\-simple.c}}
+}
+{\ttfamily \#include \char`\"{}parse\_\-simple.h\char`\"{}}\par
+{\ttfamily \#include $<$poker-\/eval/poker\_\-defs.h$>$}\par
+{\ttfamily \#include $<$assert.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include \char`\"{}misc\_\-toksplit.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}misc\_\-helpers.h\char`\"{}}\par
+Include dependency graph for parse\_\-simple.c:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{parse__simple_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{parse__simple_8c_ab5d81a74b98c624b3a939c22d0dbcf95}{to\_\-suit} (char chr)
+\item 
+int \hyperlink{parse__simple_8c_aa7249a1d4e894c94b53006fd7bc93324}{StdDeck\_\-Rank\_\-from\_\-INT} (int num)
+\item 
+int \hyperlink{parse__simple_8c_a03fcde26a0c2f483e37f3d75bee72f08}{to\_\-rank} (char chr)
+\item 
+void \hyperlink{parse__simple_8c_ad34bda6b35f5cac24a6b1847cd4ae267}{array2\_\-char\_\-alloc\_\-range} (char $\ast$$\ast$arr, int size, int begin, int end)
+\item 
+void \hyperlink{parse__simple_8c_a1ff230557ec568046662f16b8ee52815}{array2\_\-char\_\-free\_\-range} (char $\ast$$\ast$arr, int begin, int end)
+\item 
+char $\ast$$\ast$ \hyperlink{parse__simple_8c_a072c919ddd174150d8d9a8f72c480c73}{parse\_\-string\_\-array\_\-strings} (char $\ast$str, int $\ast$res\_\-x)
+\item 
+StdDeck\_\-CardMask \hyperlink{parse__simple_8c_a3fe9e89d2b2a7ebc37af9b58443c99cb}{parse\_\-string\_\-cardmask} (char $\ast$str)
+\item 
+StdDeck\_\-CardMask $\ast$ \hyperlink{parse__simple_8c_adcc9b3b5c78ea0fe788ea63d8e0c597b}{parse} (char $\ast$str, int $\ast$hands)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{parse__simple_8c_ad34bda6b35f5cac24a6b1847cd4ae267}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!array2\_\-char\_\-alloc\_\-range@{array2\_\-char\_\-alloc\_\-range}}
+\index{array2\_\-char\_\-alloc\_\-range@{array2\_\-char\_\-alloc\_\-range}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{array2\_\-char\_\-alloc\_\-range}]{\setlength{\rightskip}{0pt plus 5cm}void array2\_\-char\_\-alloc\_\-range (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{ arr, }
+\item[{int}]{ size, }
+\item[{int}]{ begin, }
+\item[{int}]{ end}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_ad34bda6b35f5cac24a6b1847cd4ae267}
+\hypertarget{parse__simple_8c_a1ff230557ec568046662f16b8ee52815}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!array2\_\-char\_\-free\_\-range@{array2\_\-char\_\-free\_\-range}}
+\index{array2\_\-char\_\-free\_\-range@{array2\_\-char\_\-free\_\-range}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{array2\_\-char\_\-free\_\-range}]{\setlength{\rightskip}{0pt plus 5cm}void array2\_\-char\_\-free\_\-range (
+\begin{DoxyParamCaption}
+\item[{char $\ast$$\ast$}]{ arr, }
+\item[{int}]{ begin, }
+\item[{int}]{ end}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_a1ff230557ec568046662f16b8ee52815}
+\hypertarget{parse__simple_8c_adcc9b3b5c78ea0fe788ea63d8e0c597b}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!parse@{parse}}
+\index{parse@{parse}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{parse}]{\setlength{\rightskip}{0pt plus 5cm}StdDeck\_\-CardMask$\ast$ parse (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{ str, }
+\item[{int $\ast$}]{ hands}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_adcc9b3b5c78ea0fe788ea63d8e0c597b}
+\hypertarget{parse__simple_8c_a072c919ddd174150d8d9a8f72c480c73}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!parse\_\-string\_\-array\_\-strings@{parse\_\-string\_\-array\_\-strings}}
+\index{parse\_\-string\_\-array\_\-strings@{parse\_\-string\_\-array\_\-strings}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{parse\_\-string\_\-array\_\-strings}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$$\ast$ parse\_\-string\_\-array\_\-strings (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{ str, }
+\item[{int $\ast$}]{ res\_\-x}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_a072c919ddd174150d8d9a8f72c480c73}
+\hypertarget{parse__simple_8c_a3fe9e89d2b2a7ebc37af9b58443c99cb}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!parse\_\-string\_\-cardmask@{parse\_\-string\_\-cardmask}}
+\index{parse\_\-string\_\-cardmask@{parse\_\-string\_\-cardmask}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{parse\_\-string\_\-cardmask}]{\setlength{\rightskip}{0pt plus 5cm}StdDeck\_\-CardMask parse\_\-string\_\-cardmask (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{ str}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_a3fe9e89d2b2a7ebc37af9b58443c99cb}
+\hypertarget{parse__simple_8c_aa7249a1d4e894c94b53006fd7bc93324}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!StdDeck\_\-Rank\_\-from\_\-INT@{StdDeck\_\-Rank\_\-from\_\-INT}}
+\index{StdDeck\_\-Rank\_\-from\_\-INT@{StdDeck\_\-Rank\_\-from\_\-INT}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{StdDeck\_\-Rank\_\-from\_\-INT}]{\setlength{\rightskip}{0pt plus 5cm}int StdDeck\_\-Rank\_\-from\_\-INT (
+\begin{DoxyParamCaption}
+\item[{int}]{ num}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_aa7249a1d4e894c94b53006fd7bc93324}
+\hypertarget{parse__simple_8c_a03fcde26a0c2f483e37f3d75bee72f08}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!to\_\-rank@{to\_\-rank}}
+\index{to\_\-rank@{to\_\-rank}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{to\_\-rank}]{\setlength{\rightskip}{0pt plus 5cm}int to\_\-rank (
+\begin{DoxyParamCaption}
+\item[{char}]{ chr}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_a03fcde26a0c2f483e37f3d75bee72f08}
+\hypertarget{parse__simple_8c_ab5d81a74b98c624b3a939c22d0dbcf95}{
+\index{parse\_\-simple.c@{parse\_\-simple.c}!to\_\-suit@{to\_\-suit}}
+\index{to\_\-suit@{to\_\-suit}!parse_simple.c@{parse\_\-simple.c}}
+\subsubsection[{to\_\-suit}]{\setlength{\rightskip}{0pt plus 5cm}int to\_\-suit (
+\begin{DoxyParamCaption}
+\item[{char}]{ chr}
+\end{DoxyParamCaption}
+)}}
+\label{parse__simple_8c_ab5d81a74b98c624b3a939c22d0dbcf95}
