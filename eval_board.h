@@ -52,7 +52,6 @@
 #include <poker-eval/deck_std.h>
 #include <poker-eval/enumerate.h>
 
-#include "eval_board.h"
 #include "eval_single.h"
 
 #include "misc_helpers.h"

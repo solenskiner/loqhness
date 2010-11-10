@@ -30,10 +30,6 @@ using namespace std;
 
 static QString strTypes[9] = {"High card:", "Pair:", "Two pair:", "Three of a kind:", "Straight:", "Flush:", "Full house:", "Four of a Kind:", "Straightflush:"};
 
-extern "C" {
-  #include "eval_data.h"
-}
-
 class loq_types {
   public:
     QLayout* getLayout();

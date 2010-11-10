@@ -24,7 +24,6 @@
 #include <poker-eval/poker_defs.h>
 #include <poker-eval/deck_std.h>
 
-#include "eval_data.h"
 #include "eval_defines.h"
 
 int evaluate_hand(StdDeck_CardMask * hand, StdDeck_CardMask * board);

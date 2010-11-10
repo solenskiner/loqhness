@@ -30,14 +30,14 @@
 # alternativt, för mer än 3 genom att kolla realworldresultat i databas ist för simulera
 # undersök möjlighet att sälja i²cm
 # rent i²cm program för realtime användning, hud, databas koppling (för att finna stackar etc)
-TARGET = loqhness
+TARGET = ./loqhness
 TEMPLATE = app
 qt = \
     core \
     gui
 CONFIG = \
     qt \
-    gcc \
+#    gcc \
     debug
  #   release
 

@@ -24,7 +24,6 @@
 #include <poker-eval/deck_std.h>
 
 #include "eval_single.h"
-#include "eval_data.h"
 
 #include "misc_helpers.h"
 
