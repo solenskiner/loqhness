@@ -44,41 +44,43 @@ class loqhness : public QDialog {
     ~loqhness();
   signals:
   private slots:
-    void updateBoard();
-    void updateCards();
-    void calcBoard_clicked();
-    void calcDraws_clicked();
-    void calcEquity_clicked();
+    void calc_board_clicked();
+    void calc_draws_clicked();
+    void calc_equity_clicked();
   private:
-    QVBoxLayout * mainLayout;
+    void update_board();
+    void update_cards();
+    void update_equities(float* equities, int players);
+    void clear_equities();
 
-    QGridLayout * linesLayout;
+    QVBoxLayout * main;
+
+    QGridLayout * lines;
     QLabel * labels[5];
-    QLabel * lblActors[ACTORS];
-    QLineEdit * linCards[ACTORS];
-    QProgressBar * barEquity[ACTORS];
-    QProgressBar * barBoardStr[ACTORS];
-    QProgressBar * barClassStr[ACTORS];
-    QLabel * lblBoard;
-    QLineEdit * linBoard;
 
-    void barEquities_clear();
-    void barEquities_update(float* equities, int players);
-
-    QHBoxLayout * typesLayout;
+    QHBoxLayout * types;
     loq_draws * wgtDraws;
     loq_board * wgtBoard;
 
-    QHBoxLayout * calcLayout;
-    QPushButton * calcBoard;
-    QPushButton * calcDraws;
-    QPushButton * calcEquity;
+    QHBoxLayout * calc;
+    QPushButton * calc_board;
+    QPushButton * calc_draws;
+    QPushButton * calc_equity;
 
+    QProgressBar * equity[ACTORS];
+    QProgressBar * str_on_board[ACTORS];
+    QProgressBar * str_in_class[ACTORS];
+    QLabel * player_label[ACTORS];
+    QLineEdit * hands_edit[ACTORS];
     StdDeck_CardMask** player;
     int* hands;
     int players;
+
+    QLabel * board_label;
+    QLineEdit * board_edit;
     StdDeck_CardMask* board;
     int boards;
+    int boards_nums[];
     int** board_all_hand; //[boards][1326]
   //
 };
