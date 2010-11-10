@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node15" href="$eval__board_8h.html" title="eval_board.h" alt="" coords="667,83,774,112"/>
-<area shape="rect" id="node27" href="$eval__single_8h.html" title="eval_single.h" alt="" coords="812,160,919,189"/>
-<area shape="rect" id="node36" href="$misc__helpers_8h.html" title="misc_helpers.h" alt="" coords="567,160,687,189"/>
-<area shape="rect" id="node18" href="$eval__data_8h.html" title="eval_data.h" alt="" coords="730,237,828,267"/>
-<area shape="rect" id="node32" href="$eval__defines_8h.html" title="eval_defines.h" alt="" coords="903,237,1018,267"/>
-<area shape="rect" id="node34" href="$misc__bitoperations_8h.html" title="misc_bitoperations.h" alt="" coords="882,315,1039,344"/>
-</map>

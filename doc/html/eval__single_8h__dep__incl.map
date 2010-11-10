@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$eval__board_8h.html" title="eval_board.h" alt="" coords="152,83,259,112"/>
-<area shape="rect" id="node5" href="$eval__board_8c.html" title="eval_board.c" alt="" coords="5,160,109,189"/>
-<area shape="rect" id="node8" href="$gui__main_8cpp.html" title="gui_main.cpp" alt="" coords="133,160,243,189"/>
-<area shape="rect" id="node10" href="$gui__types_8cpp.html" title="gui_types.cpp" alt="" coords="267,160,379,189"/>
-<area shape="rect" id="node13" href="$eval__single_8c.html" title="eval_single.c" alt="" coords="357,83,464,112"/>
-</map>
