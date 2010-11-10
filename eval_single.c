@@ -56,26 +56,26 @@ float * evaluate_hand_draws(StdDeck_CardMask * board, StdDeck_CardMask * hand, i
       iterations,
       {
         StdDeck_CardMask_OR(tmp_cards, *board, gen_board);
-        results[evaluate_hand_type(hand, &tmp_cards)]++;
+        results[HandVal_HANDTYPE(evaluate_hand(hand, &tmp_cards))]++;
         count++;
       }
     );
   } else {
     switch(gen_cards) {
       case 3: DECK_ENUMERATE_3_CARDS_D(StdDeck, gen_board, used_cards, {
-        results[evaluate_hand_type(hand, board)]++;
+        results[HandVal_HANDTYPE(evaluate_hand(hand, board))]++;
         count++;
       } ); break;
       case 4: DECK_ENUMERATE_4_CARDS_D(StdDeck, gen_board, used_cards, {
-        results[evaluate_hand_type(hand, board)]++;
+        results[HandVal_HANDTYPE(evaluate_hand(hand, board))]++;
         count++;
       } ); break;
       case 5: DECK_ENUMERATE_5_CARDS_D(StdDeck, gen_board, used_cards, {
-        results[evaluate_hand_type(hand, board)]++;
+        results[HandVal_HANDTYPE(evaluate_hand(hand, board))]++;
         count++;
       } ); break;
       case 0:
-        results[evaluate_hand_type(hand, board)]++;
+        results[evaluate_hand(hand, board)]++;
         count++;
       break;
       default:

@@ -37,7 +37,7 @@ qt = \
     gui
 CONFIG = \
     qt \
-#    gcc \
+    gcc \
     debug
  #   release
 

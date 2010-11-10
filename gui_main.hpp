@@ -47,9 +47,9 @@ class loqhness : public QDialog {
     void calc_board_clicked();
     void calc_draws_clicked();
     void calc_equity_clicked();
-  private:
     void update_board();
     void update_cards();
+  private:
     void update_equities(float* equities, int players);
     void clear_equities();
 
@@ -80,8 +80,8 @@ class loqhness : public QDialog {
     QLineEdit * board_edit;
     StdDeck_CardMask* board;
     int boards;
-    int boards_nums[];
-    int** board_all_hand; //[boards][1326]
+    int* board_enumed_hands;
+    int** board_enumed_hand; // evaluated values
   //
 };
 

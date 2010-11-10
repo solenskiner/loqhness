@@ -33,6 +33,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+/// board -> array of evaluated_values for every possible hand
 int * enumerate_all_hands( StdDeck_CardMask * board, int * out_size) {
   int * results = (int*) malloc(sizeof(int) * 1326);
 
@@ -51,16 +52,17 @@ int * enumerate_all_hands( StdDeck_CardMask * board, int * out_size) {
   return results;
 }
 
-int** enumerate_all_hands_boards(int ** board, int * boards, int** out_size) {
+/// array of boards -> array of array of evaluated_values for every possible hand
+int** enumerate_all_hands_boards(StdDeck_CardMask * board, int boards, int* out_size) {
   int** array_result = (int**) malloc(sizeof(int*) * boards);
   for (int i = 0; i < boards; i++) {
-    array_result[i] = enumerate_all_hands(&(board[i]), out_size[i]);
+    array_result[i] = enumerate_all_hands(&(board[i]), &(out_size[i]));
   }
   return array_result;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 float find_hand_worth_i(int spec_value, int* board_hand_value, int board_hand_values) {
   for (int i = 0; i < board_hand_values; i++)
     if (spec_value == board_hand_value[i]) {
@@ -94,7 +96,7 @@ float find_hands_worth_boards(StdDeck_CardMask * hand, int hands, StdDeck_CardMa
     array_result[i] = find_hands_worth(hand, hands, &(board[i]), board_hand_value[i], board_hand_values[i]);
   }
   float result = array_mean_f(array_result, boards);
-  free_f(array_result);
+  free(array_result);
   return result;
 }
 
@@ -136,23 +138,23 @@ int* filter_hand_type_boards(int type, int* hand, int board_hand_values, int ** 
   results = (int*) realloc(results, *out_size);
   return results;
 }
-
+*/
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-float * eval_distribution(int * board_hand_value) {
+float * eval_distribution(int * board_enumed_hand, int board_enumed_hands) {
   float * results = (float*) malloc(sizeof(float) * 9);
   array_init_f(9, 0, results);
-  for (int i = 0; i < 1326; i++)
-    results[HandVal_HANDTYPE(board_hand_value[i])]++;
+  for (int i = 0; i < board_enumed_hands; i++)
+    results[HandVal_HANDTYPE(board_enumed_hand[i])]++;
   for (int i = 0; i < 9; i++)
-    results[i] /= (float) 1326;
+    results[i] /= (float) board_enumed_hands;
   return results;
 }
 
-float* eval_distribution_boards(int ** board_hand_value, int * boards) {
+float* eval_distribution_boards(int ** board_enumed_hand, int boards, int * board_enumed_hands) {
   float** array_result = (float**) malloc(sizeof(float*) * boards);
   for (int i = 0; i < boards; i++) {
-    array_result[i] = eval_distribution(&(board_hand_value[i]));
+    array_result[i] = eval_distribution(board_enumed_hand[i], board_enumed_hands[i]);
   }
   float* result = array2_mean_array_f(array_result, boards, 9);
   array2_free_f(array_result, boards);

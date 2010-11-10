@@ -219,20 +219,26 @@ StdDeck_CardMask** array2_filter_array2_cardmask(StdDeck_CardMask** array, int x
 void array2_free_f(float ** arr, int x) {
   for (int i = 0; i < x; i++) {
     free(arr[i]);
+    arr[i] = NULL;
   }
   free(arr);
+  arr = NULL;
 }
 void array2_free_i(int ** arr, int x) {
   for (int i = 0; i < x; i++) {
     free(arr[i]);
+    arr[i] = NULL;
   }
   free(arr);
+  arr = NULL;
 }
 void array2_free_cardmask(StdDeck_CardMask ** arr, int x) {
   for (int i = 0; i < x; i++) {
     free(arr[i]);
+    arr[i] = NULL;
   }
   free(arr);
+  arr = NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

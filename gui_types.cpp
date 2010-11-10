@@ -120,8 +120,8 @@ loq_board::loq_board(QWidget * parnt, bool showLabels) {
     street = new loq_types("Board distribution:", parnt, showLabels);
 }
 
-void loq_board::update(StdDeck_CardMask* board, int boards) {
-  float * results = eval_distributions(board, boards);
+void loq_board::update(int ** board_enumed_hand, int boards, int * board_enumed_hands) {
+  float * results = eval_distribution_boards(board_enumed_hand,boards, board_enumed_hands);
   street->update(results);
   free(results);
 }

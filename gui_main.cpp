@@ -35,7 +35,7 @@ extern "C" {
   #include "parse_simple.h"
 }
 
-/// integer to std::string
+/// int -> Std::string
 string itos(int a) {
   string sign = a<0?"-":"";
   string result = a>0?string(1,(a%10+'0')):string(1,((a=-a)%10+'0'));
@@ -43,6 +43,7 @@ string itos(int a) {
   return sign+result;
 }
 
+/// sets up main gui and signal handlers.
 loqhness::loqhness() {
   main = new QVBoxLayout(this);
   main->setSpacing(2);
@@ -110,18 +111,14 @@ loqhness::loqhness() {
   board = (StdDeck_CardMask*) malloc(sizeof(StdDeck_CardMask));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 void loqhness::calc_board_clicked() {
-  int size;
-  board_all_hand = enumerate_all_hands_boards(boards, board_all_hands, size);
+  /*
+  float* player_str_board = find_hands_worth_boards(player[i], hands[i], board, boards, boards_all_hand, board_all_hands);
 
-  float* players_board_worth = find_hands_worth_boards(player[i], hands[i], board, boards, boards_all_hand, board_all_hands);
-
-  filter
-
-  int i = 0;
   for (; i < players; i++) {
-    str_on_board[i]->setValue((int) players_board_worth[i] * 100 + 0.5);
+    str_on_board[i]->setValue((int) player_str_board[i] * 100 + 0.5);
     str_on_board[i]->setEnabled(true);
 
     str_on_board[i]->setValue((int) players_board_worth_class[i] * 100 + 0.5);
@@ -130,19 +127,11 @@ void loqhness::calc_board_clicked() {
   for (; i < ACTORS; i++) {
     str_on_board[i]->setEnabled(false);
   }
-  wgtBoard->update(board, boards);
+*/
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 void loqhness::calc_draws_clicked() {
   wgtDraws->update(board, boards, player[0], hands[0], EVALFLAGS);
-}
-
-void loqhness::clear_equities() {
-  for (int i = 0; i < ACTORS; i++) {
-    equity[i]->setEnabled(false);
-  }
 }
 void loqhness::update_equities(float* equities, int plyers) {
   int i;
@@ -150,7 +139,7 @@ void loqhness::update_equities(float* equities, int plyers) {
     equity[i]->setEnabled(true);
     equity[i]->setValue((int)(equities[i] * 100 + 0.5));
   }
-  for (i; i < ACTORS; i++) {
+  for (; i < ACTORS; i++) {
     equity[i]->setEnabled(false);
   }
 }
@@ -167,7 +156,10 @@ void loqhness::calc_equity_clicked() {
 
 void loqhness::update_board() {
   free(board);
-  board = parse(const_cast<char*>(board_edit->text().toStdString().c_str()), &boards);  w
+  board = parse(const_cast<char*>(board_edit->text().toStdString().c_str()), &boards);
+  array2_free_i(board_enumed_hand, boards);
+  board_enumed_hand = enumerate_all_hands_boards(board, boards, board_enumed_hands);
+  wgtBoard->update(board_enumed_hand, boards, board_enumed_hands);
 }
 void loqhness::update_cards() {
   for (int i = 0; i < ACTORS; i++) {
@@ -179,13 +171,14 @@ void loqhness::update_cards() {
   }
 }
 
-
-
+///////////////////////////////////////////////////////////////////
 
 loqhness::~loqhness() {
   free(hands);
   array2_free_cardmask(player, ACTORS);
   free(board);
+  array2_free_i(board_enumed_hand, boards);
+  free(board_enumed_hands);
 }
 
 int main(int argc, char *argv[]) {

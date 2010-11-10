@@ -26,6 +26,10 @@
 #include <QGridLayout>
 #include <QProgressBar>
 
+extern "C" {
+  #include <poker-eval/poker_defs.h>
+}
+
 using namespace std;
 
 static QString strTypes[9] = {"High card:", "Pair:", "Two pair:", "Three of a kind:", "Straight:", "Flush:", "Full house:", "Four of a Kind:", "Straightflush:"};
@@ -67,7 +71,7 @@ class loq_board : public QWidget {
   public:
     loq_board(QWidget * parnt, bool showLabels);
     QLayout* getLayout();
-    void update(StdDeck_CardMask* board, int boards);
+    void update(int ** board_enumed_hand, int boards, int * board_enumed_hands);
     void clear();
   signals:
   private slots:
