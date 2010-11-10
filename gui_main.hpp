@@ -24,8 +24,10 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
-
-#include "gui_types.hpp"
+#include <QTabWidget>
+#include <QLabel>
+#include <QGridLayout>
+#include <QProgressBar>
 
 extern "C" {
   #include <poker-eval/poker_defs.h>
@@ -35,7 +37,71 @@ extern "C" {
 #define EVALFLAGS ITERATIONS_SET(10000)
 #define ACTORS 9
 
-std::string itos(int a);
+class hand_classes_bars {
+  public:
+    QLayout* getLayout();
+    hand_classes_bars(QString name, QWidget * parent, bool showLabels);
+    void clear();
+    void update(float * item);
+    ~hand_classes_bars();
+  private:
+    QGridLayout * layout;
+    QLabel * label;
+    QLabel * labels[9];
+    QProgressBar * bars[9];
+  //
+};
+
+class draws_bars {
+  public:
+    QLayout* getLayout();
+    draws_bars(QWidget * parent, bool showLabels);
+    void update(StdDeck_CardMask* board, int boards, StdDeck_CardMask * player, int hands, int flags);
+    ~draws_bars();
+     void clear();
+  signals:
+  private slots:
+
+  private:
+    hand_classes_bars * streets[3];
+    QHBoxLayout * layout;
+  //
+};
+
+class tab_player_t : public QWidget {
+  Q_OBJECT
+  public:
+    tab_player_t(QWidget* _parent);
+    void update(float _equity, float** _draws);
+    void clear();
+  signals:
+  private slots:
+  private:
+    QLabel      * equity_label;
+    QProgressBar* equity;
+    draws_bars  * draws;
+    QGridLayout * layout;
+  //
+  friend class tab_overview_t;
+};
+
+class tab_overview_t : public QWidget {
+  Q_OBJECT
+  public:
+    tab_overview_t(QWidget* _parent, tab_player_t* tab_player[]);
+  signals:
+  private slots:
+  private:
+    QGridLayout * layout;
+    QLabel      * equity_label;
+    QLabel      * hands_label[ACTORS];
+    QLabel      * player_label[ACTORS];
+    QProgressBar* equity[ACTORS];
+    QLabel      * board_label;
+    QLabel      * comb_label;
+    QLabel      * boards_label;
+  //
+};
 
 class loqhness : public QDialog {
   Q_OBJECT
@@ -56,20 +122,7 @@ class loqhness : public QDialog {
     QVBoxLayout * main;
 
     QGridLayout * lines;
-    QLabel * labels[5];
-
-    QHBoxLayout * types;
-    loq_draws * wgtDraws;
-    loq_board * wgtBoard;
-
-    QHBoxLayout * calc;
-    QPushButton * calc_board;
-    QPushButton * calc_draws;
-    QPushButton * calc_equity;
-
-    QProgressBar * equity[ACTORS];
-    QProgressBar * str_on_board[ACTORS];
-    QProgressBar * str_in_class[ACTORS];
+    QLabel * cards_label;
     QLabel * player_label[ACTORS];
     QLineEdit * hands_edit[ACTORS];
     StdDeck_CardMask** player;
@@ -81,7 +134,18 @@ class loqhness : public QDialog {
     StdDeck_CardMask* board;
     int boards;
     int* board_enumed_hands;
-    int** board_enumed_hand; // evaluated values
+    int** board_enumed_hand;
+
+    QTabWidget* tabs;
+    tab_overview_t* tab_overview;
+    tab_player_t* tab_player[ACTORS];
+    QWidget* tab_board;
+
+    QHBoxLayout * calc;
+    QPushButton * calc_board;
+    QPushButton * calc_draws;
+    QPushButton * calc_equity;
+
   //
 };
 

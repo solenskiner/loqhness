@@ -20,12 +20,10 @@
 
 #include <QApplication>
 #include "gui_main.hpp"
+//#include "gui_types.hpp"
 
 extern "C" {
-  #include <math.h>
-
   #include <poker-eval/poker_defs.h>
-  #include <poker-eval/deck_std.h>
 
   #include "eval_board.h"
   #include "eval_equity.h"
@@ -35,6 +33,10 @@ extern "C" {
   #include "parse_simple.h"
 }
 
+static QString classes_names[9] = {"High card:", "Pair:", "Two pair:", "Three of a kind:", "Straight:", "Flush:", "Full house:", "Four of a Kind:", "Straightflush:"};
+
+std::string itos(int a);
+
 /// int -> Std::string
 std::string itos(int a) {
   std::string sign = a<0?"-":"";
@@ -43,66 +45,111 @@ std::string itos(int a) {
   return sign+result;
 }
 
+//// PLAYER TAB //////////////////////////////////////////////////
+
+tab_player_t::tab_player_t(QWidget* _parent) {
+  layout         = new QGridLayout(this);
+  layout->setSpacing(2);
+
+  equity_label   = new QLabel("Equity: ", this);
+  layout->addWidget(equity_label, 0, 0);
+
+  equity         = new QProgressBar(this);
+  layout->addWidget(equity, 0, 1);
+
+  draws          = new draws_bars(this, true);
+  layout->addLayout(draws->getLayout(), 3, 0, 1, 2);
+}
+void tab_player_t::clear() {
+  equity->setEnabled(false);
+  draws->clear();
+}
+void tab_player_t::update(float _equity, float** _draws) {
+  equity->setValue(_equity);
+  equity->setEnabled(true);
+  //_draws->update();
+}
+
+
+tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t * tab_player[]) {
+  layout = new QGridLayout(this);
+  layout->setSpacing(2);
+
+  equity_label = new QLabel("Equity: ", this);
+  layout->addWidget(equity_label, 0, 1);
+  comb_label = new QLabel("Hands: ", this);
+  layout->addWidget(comb_label, 0, 2);
+
+  for (int i = 0; i < ACTORS; i++) {
+    player_label[i] = new QLabel(QString::fromStdString("Player " + itos(i + 1) + ": "), this);
+    layout->addWidget(player_label[i], i + 1, 0);
+    equity[i] = tab_player[i]->equity;
+    layout->addWidget(equity[1], i + 1, 1);
+  }
+  board_label = new QLabel("Board: ", this);
+  layout->addWidget(board_label, ACTORS + 2, 0);
+}
+
+//////////////////////////////////////////////////////////////////
+
 /// sets up main gui and signal handlers.
 loqhness::loqhness() {
   main = new QVBoxLayout(this);
   main->setSpacing(2);
 
+  // set up UI line edits
   lines = new QGridLayout();
   lines->setSpacing(2);
-  std::string text[5] = {"", "Cards:", "Equity:", "On-Board %:", "In-Class %:"};
-  for (int i = 0; i < 5; i++) {
-    labels[i] = new QLabel(QString::fromStdString(text[i]), this);
-    lines->addWidget(labels[i], 0, i);
-  }
+  cards_label = new QLabel("Cards:", this);
+  lines->addWidget(cards_label, 0, 1);
   for (int i = 0; i < ACTORS; i++) {
     player_label[i] = new QLabel(this);
     player_label[i]->setText(QString::fromStdString("Player &" + itos(i+1) + ":"));
     hands_edit[i] = new QLineEdit(this);
-    //hands_edit[i]->setValidator(&validateCards);
     player_label[i]->setBuddy(hands_edit[i]);
-    equity[i] = new QProgressBar(this);
-    str_on_board[i] = new QProgressBar(this);
-    str_in_class[i] = new QProgressBar(this);
     lines->addWidget(player_label[i], i+1, 0);
     lines->addWidget(hands_edit[i], i+1, 1);
-    lines->addWidget(equity[i], i+1, 2);
-    lines->addWidget(str_on_board[i], i+1, 3);
-    lines->addWidget(str_in_class[i], i+1, 4);
   }
   board_label = new QLabel("&Board:", this);
   board_edit = new QLineEdit(this);
   board_label->setBuddy(board_edit);
   lines->addWidget(board_label, ACTORS+1, 0);
-  lines->addWidget(board_edit, ACTORS+1, 1, 1, 4);
+  lines->addWidget(board_edit, ACTORS+1, 1);
   main->addLayout(lines);
 
-  types = new QHBoxLayout();
-  wgtDraws = new loq_draws(this, true);
-  wgtBoard = new loq_board(this, false);
-  types->addLayout(wgtDraws->getLayout());
-  types->addLayout(wgtBoard->getLayout());
-  main->addLayout(types);
+  // set up UI displays
+  tabs = new QTabWidget(this);
+  for (int i = 0; i < ACTORS; i++) {
+    tab_player[i] = new tab_player_t(this);
+  }
+  tab_overview = new tab_overview_t(this, tab_player);
+  tabs->addTab(tab_overview, "Overview");
+  for (int i = 0; i < ACTORS; i++) {
+    tabs->addTab(tab_player[i], QString::fromStdString("Player " + itos(i + 1)));
+  }
+  main->addWidget(tabs);
 
-  calc= new QHBoxLayout();
+  // set up UI buttons
+  calc = new QHBoxLayout();
   calc->setSpacing(2);
-  calc_draws = new QPushButton("Calculate player 1 &draws", this);
+  calc_draws = new QPushButton("Calculate &draws", this);
   calc_board = new QPushButton("Calculate d&istribution", this);
-  calc_equity = new QPushButton("Calculate &equity", this);
+  calc_equity = new QPushButton("Calculate e&quity", this);
   calc->addWidget(calc_draws);
   calc->addWidget(calc_board);
   calc->addWidget(calc_equity);
   main->addLayout(calc);
 
+  // connect signals and slots
   connect(board_edit, SIGNAL(editingFinished()), this, SLOT(update_board()));
   for (int i = 0; i < ACTORS; i++) {
     connect(hands_edit[i], SIGNAL(editingFinished()), this, SLOT(update_cards()));
   }
-
   connect(calc_board,  SIGNAL(clicked()), this, SLOT(calc_board_clicked()));
   connect(calc_draws,  SIGNAL(clicked()), this, SLOT(calc_draws_clicked()));
   connect(calc_equity, SIGNAL(clicked()), this, SLOT(calc_equity_clicked()));
 
+  // init private data
   hands = (int*) malloc(sizeof(int) * ACTORS);
   player = (StdDeck_CardMask**) malloc(sizeof(StdDeck_CardMask*) * ACTORS);
   for (int i = 0; i < ACTORS; i++) {
@@ -130,10 +177,10 @@ void loqhness::calc_board_clicked() {
 */
 }
 
-void loqhness::calc_draws_clicked() {
-  wgtDraws->update(board, boards, player[0], hands[0], EVALFLAGS);
+void loqhness::calc_draws_clicked() {/*
+  draws->update(board, boards, player[0], hands[0], EVALFLAGS); */
 }
-void loqhness::update_equities(float* equities, int plyers) {
+void loqhness::update_equities(float* equities, int plyers) {/*
   int i;
   for (i = 0; i < plyers; i++) {
     equity[i]->setEnabled(true);
@@ -141,7 +188,7 @@ void loqhness::update_equities(float* equities, int plyers) {
   }
   for (; i < ACTORS; i++) {
     equity[i]->setEnabled(false);
-  }
+  }*/
 }
 
 void loqhness::calc_equity_clicked() {
@@ -159,7 +206,7 @@ void loqhness::update_board() {
   board = parse(const_cast<char*>(board_edit->text().toStdString().c_str()), &boards);
   array2_free_i(board_enumed_hand, boards);
   board_enumed_hand = enumerate_all_hands_boards(board, boards, board_enumed_hands);
-  wgtBoard->update(board_enumed_hand, boards, board_enumed_hands);
+  //distribution->update(board_enumed_hand, boards, board_enumed_hands);
 }
 void loqhness::update_cards() {
   for (int i = 0; i < ACTORS; i++) {
@@ -170,6 +217,93 @@ void loqhness::update_cards() {
     if (hands[players] == 0) break;
   }
 }
+
+///////    TYPES    ///////////////////////////////////////////////
+
+hand_classes_bars::hand_classes_bars (QString name, QWidget * parnt, bool showLabels) {
+  layout = new QGridLayout();
+  label = new QLabel(name, parnt);
+  if (showLabels) {
+    layout->addWidget(label, 1, 2);
+    for (int i = 0; i < 9; i++) {
+      labels[i] = new QLabel(classes_names[i], parnt);
+      layout->addWidget(labels[i], i+2, 1);
+      bars[i] = new QProgressBar(parnt);
+      layout->addWidget(bars[i], i+2, 2);
+    }
+  } else {
+    for (int i = 0; i < 9; i++) {
+      layout->addWidget(label, 1, 1);
+      bars[i] = new QProgressBar(parnt);
+      layout->addWidget(bars[i], i+2, 1);
+    }
+  }
+  layout->setSpacing(2);
+  hand_classes_bars::clear();
+}
+void hand_classes_bars::clear() {
+  for (int i = 0; i < 9; i++) {
+    bars[i]->setEnabled(false);
+  }
+}
+void hand_classes_bars::update(float * item) {
+  for (int i = 0; i < 9; i++) {
+    bars[i]->setEnabled(true);
+    bars[i]->setValue(int(item[i] * 100 + 0.5));
+  }
+}
+QLayout* hand_classes_bars::getLayout () { return layout; }
+hand_classes_bars::~hand_classes_bars() { delete layout; }
+
+///////    DRAWS    ///////////////////////////////////////////////
+
+draws_bars::draws_bars(QWidget * parent, bool showLabels) {
+  QString name[3] = {"Flop:", "Turn:", "River:"};
+  layout = new QHBoxLayout();
+  if (showLabels) {
+    streets[0] = new hand_classes_bars(name[0], parent, true);
+    streets[1] = new hand_classes_bars(name[1], parent, false);
+    streets[2] = new hand_classes_bars(name[2], parent, false);
+  } else {
+    for (int i = 0; i < 3; i++) {
+      streets[i] = new hand_classes_bars(name[i], parent, false);
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    layout->addLayout(streets[i]->getLayout());
+  }
+  layout->setSpacing(2);
+}
+
+void draws_bars::update(StdDeck_CardMask* board, int boards, StdDeck_CardMask * player, int hands, int flags) {
+  if (boards == 0) {
+    board = (StdDeck_CardMask*) realloc(board, sizeof(StdDeck_CardMask));
+    boards = 1;
+    StdDeck_CardMask_RESET(*board);
+  }
+
+  int evalargs[3] = {FLOP | flags, TURN | flags, RIVER | flags};
+
+  float ** results = (float**) malloc(sizeof(float*) * 3);
+  for (int i = 0; i < 3; i++) {
+    results[i] = evaluate_hands_draws_boards(board, boards, player, hands, evalargs[i] );
+  }
+
+  for (int i = 0; i < 3; i++) {
+    streets[i]->clear();
+    streets[i]->update(results[i]);
+  }
+
+  array2_free_f(results, 3);
+}
+
+void draws_bars::clear() {
+  for (int i = 0; i < 3; i++) {
+    streets[i]->clear();
+  }
+}
+QLayout* draws_bars::getLayout() { return layout; }
+draws_bars::~draws_bars() { delete layout; }
 
 ///////////////////////////////////////////////////////////////////
 
