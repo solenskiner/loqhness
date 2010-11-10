@@ -36,9 +36,9 @@ extern "C" {
 }
 
 /// int -> Std::string
-string itos(int a) {
-  string sign = a<0?"-":"";
-  string result = a>0?string(1,(a%10+'0')):string(1,((a=-a)%10+'0'));
+std::string itos(int a) {
+  std::string sign = a<0?"-":"";
+  std::string result = a>0?std::string(1,(a%10+'0')):std::string(1,((a=-a)%10+'0'));
   (a/=10)>0?result=itos(a)+result:result;
   return sign+result;
 }
@@ -50,7 +50,7 @@ loqhness::loqhness() {
 
   lines = new QGridLayout();
   lines->setSpacing(2);
-  string text[5] = {"", "Cards:", "Equity:", "On-Board %:", "In-Class %:"};
+  std::string text[5] = {"", "Cards:", "Equity:", "On-Board %:", "In-Class %:"};
   for (int i = 0; i < 5; i++) {
     labels[i] = new QLabel(QString::fromStdString(text[i]), this);
     lines->addWidget(labels[i], 0, i);

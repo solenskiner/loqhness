@@ -35,7 +35,7 @@ extern "C" {
 #define EVALFLAGS ITERATIONS_SET(10000)
 #define ACTORS 9
 
-string itos(int a);
+std::string itos(int a);
 
 class loqhness : public QDialog {
   Q_OBJECT

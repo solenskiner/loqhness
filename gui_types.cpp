@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "gui_types.hpp"
-using namespace std;
 
 extern "C" {
   #include "eval_single.h"
