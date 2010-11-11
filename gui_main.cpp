@@ -34,6 +34,7 @@ extern "C" {
 }
 
 static QString classes_names[9] = {"High card:", "Pair:", "Two pair:", "Three of a kind:", "Straight:", "Flush:", "Full house:", "Four of a Kind:", "Straightflush:"};
+int line_edit::_n = 0;
 
 std::string itos(int a);
 
@@ -48,20 +49,24 @@ std::string itos(int a) {
 //// PLAYER TAB //////////////////////////////////////////////////
 
 tab_player_t::tab_player_t(QWidget* _parent) {
+  old_hands = "";
   layout         = new QGridLayout(this);
   layout->setSpacing(2);
 
   equity_label   = new QLabel("Equity: ", this);
   layout->addWidget(equity_label, 0, 0);
-
   equity         = new QProgressBar(this);
   layout->addWidget(equity, 0, 1);
 
   strenght_board_label   = new QLabel("Strength: ", this);
   layout->addWidget(strenght_board_label, 1, 0);
-
   strenght_board = new QProgressBar(this);
   layout->addWidget(strenght_board, 1, 1);
+
+  draws_bar_label   = new QLabel("Draws: ", this);
+  layout->addWidget(draws_bar_label, 2, 0);
+  draws_bar = new QProgressBar(this);
+  layout->addWidget(draws_bar, 2, 1);
 
   draws          = new draws_bars(this, true);
   layout->addLayout(draws->getLayout(), 3, 0, 1, 2);
@@ -82,6 +87,7 @@ void tab_player_t::update(float _equity, int* _boards, int _boards_num) {
   //_draws->update();
 }
 
+/// checks if internal hand representation needs updating, if so, updates and emits hands_changed() signals.
 void tab_player_t::update_hands() {
   if (((QLineEdit*) (QObject::sender()))->text() == old_hands)
     goto t_p_upd_end;
@@ -99,18 +105,43 @@ void tab_player_t::update_hands() {
 }
 
 
+tab_board_t::tab_board_t(QWidget* _parent) {
+  layout         = new QGridLayout(this);
+  layout->setSpacing(2);
+  old_cards = "";
+  spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+  layout->addItem(spacer, 4, 0);
+}
+void tab_board_t::clear() {}
+/// checks if internal hand representation needs updating, if so, updates and emits cards_changed() signals.
+void tab_board_t::update_cards() {
+  if (((QLineEdit*) (QObject::sender()))->text() == old_cards)
+    goto t_b_upd_end;
+
+  old_cards = ((QLineEdit*) QObject::sender())->text();
+  free(cards);
+  cards =  parse(const_cast<char*>(old_cards.toStdString().c_str()), &cards_num);
+
+  clear();
+  emit cards_changed(cards_num);
+  emit cards_changed(QString::fromStdString(itos(cards_num)));
+
+  t_b_upd_end:
+  return;
+}
+
 
 tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t ** tab_player, int players) {
   layout = new QGridLayout(this);
   layout->setSpacing(2);
 
-  equity_label = new QLabel("Equity: ", this);
+  equity_label = new QLabel("Equity:", this);
   layout->addWidget(equity_label, 0, 1);
-  strength_label = new QLabel("Strength: ", this);
+  strength_label = new QLabel("Strength:", this);
   layout->addWidget(strength_label, 0, 2);
-  strength_label = new QLabel("Draws: ", this);
+  strength_label = new QLabel("Draws:", this);
   layout->addWidget(strength_label, 0, 3);
-  hands_num_label = new QLabel("Hands: ", this);
+  hands_num_label = new QLabel("#: ", this);
   layout->addWidget(hands_num_label, 0, 4);
 
   player_label = new QLabel*[players];
@@ -133,7 +164,7 @@ tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t ** tab_player, int
 
     draws[i] = new QProgressBar(this);
     layout->addWidget(draws[i], i + 1, 3);
-    // some way to update this.
+    connect(tab_player[i]->draws_bar, SIGNAL(valueChanged(int)), draws[i], SLOT(setValue(int)));
 
     hands_num[i] = new QLabel(this);
     layout->addWidget(hands_num[i], i + 1, 4);
@@ -163,8 +194,11 @@ tab_overview_t::~tab_overview_t() {
 
 //////////////////////////////////////////////////////////////////
 
-/// sets up main gui and signal handlers.
 loqhness::loqhness() {
+  player_label = new QLabel*[ACTORS];
+  hands_edit = new line_edit*[ACTORS];
+  tab_player = new tab_player_t*[ACTORS];
+
   layout = new QGridLayout(this);
   layout->setSpacing(2);
 
@@ -176,23 +210,28 @@ loqhness::loqhness() {
   for (int i = 0; i < ACTORS; i++) {
     player_label[i] = new QLabel(this);
     player_label[i]->setText(QString::fromStdString("Player &" + itos(i+1) + ":"));
-    hands_edit[i] = new QLineEdit(this);
+    hands_edit[i] = new line_edit(this);
     player_label[i]->setBuddy(hands_edit[i]);
     layout->addWidget(player_label[i], i+1, 0);
     layout->addWidget(hands_edit[i], i+1, 1);
 
     tab_player[i] = new tab_player_t(this);
     connect(hands_edit[i], SIGNAL(editingFinished()), tab_player[i], SLOT(update_hands()));
+    connect(hands_edit[i], SIGNAL(focusIn(int)), tabs, SLOT(setCurrentIndex(int)));
   }
 
   tab_overview = new tab_overview_t(this, tab_player, ACTORS);
-  tabs->addTab(tab_overview, "Overview");
+  tabs->addTab(tab_overview, "O&verview");
   for (int i = 0; i < ACTORS; i++) {
     tabs->addTab(tab_player[i], QString::fromStdString("Player " + itos(i + 1)));
   }
+  tab_board = new tab_board_t(this);
+  tabs->addTab(tab_board, "Board");
 
   board_label = new QLabel("&Board:", this);
-  board_edit = new QLineEdit(this);
+  board_edit = new line_edit(this);
+  connect(board_edit, SIGNAL(editingFinished()), tab_board, SLOT(update_cards()));
+  connect(board_edit, SIGNAL(focusIn(int)), tabs, SLOT(setCurrentIndex(int)));
   board_label->setBuddy(board_edit);
   layout->addWidget(board_label, ACTORS+1, 0);
   layout->addWidget(board_edit, ACTORS+1, 1);
@@ -256,31 +295,31 @@ void loqhness::update_equities(float* equities, int plyers) {/*
   }*/
 }
 
-void loqhness::calc_equity_clicked() {
+void loqhness::calc_equity_clicked() {/*
   if (boards == 0) {
     boards = 1;
     StdDeck_CardMask_RESET(board[0]);
   }
   float * equities = evaluate_equity_players_hands_boards(player, hands, players, board, boards, EVALFLAGS | RIVER);
   update_equities(equities, players);
-  free(equities);
+  free(equities);*/
 }
 
-void loqhness::update_board() {
+void loqhness::update_board() {/*
   free(board);
   board = parse(const_cast<char*>(board_edit->text().toStdString().c_str()), &boards);
   array2_free_i(board_enumed_hand, boards);
   board_enumed_hand = enumerate_all_hands_boards(board, boards, board_enumed_hands);
-  //distribution->update(board_enumed_hand, boards, board_enumed_hands);
+  //distribution->update(board_enumed_hand, boards, board_enumed_hands);*/
 }
-void loqhness::update_cards() {
+void loqhness::update_cards() {/*
   for (int i = 0; i < ACTORS; i++) {
     free(player[i]);
     player[i] = parse(const_cast<char*>(hands_edit[i]->text().toStdString().c_str()), &(hands[i]));
   }
   for (players = 0; players < ACTORS; players++) {
     if (hands[players] == 0) break;
-  }
+  }*/
 }
 
 ///////    TYPES    ///////////////////////////////////////////////
@@ -322,16 +361,16 @@ hand_classes_bars::~hand_classes_bars() { delete layout; }
 
 ///////    DRAWS    ///////////////////////////////////////////////
 
-draws_bars::draws_bars(QWidget * parent, bool showLabels) {
+draws_bars::draws_bars(QWidget * _parent, bool showLabels) {
   QString name[3] = {"Flop:", "Turn:", "River:"};
   layout = new QHBoxLayout();
   if (showLabels) {
-    streets[0] = new hand_classes_bars(name[0], parent, true);
-    streets[1] = new hand_classes_bars(name[1], parent, false);
-    streets[2] = new hand_classes_bars(name[2], parent, false);
+    streets[0] = new hand_classes_bars(name[0], _parent, true);
+    streets[1] = new hand_classes_bars(name[1], _parent, false);
+    streets[2] = new hand_classes_bars(name[2], _parent, false);
   } else {
     for (int i = 0; i < 3; i++) {
-      streets[i] = new hand_classes_bars(name[i], parent, false);
+      streets[i] = new hand_classes_bars(name[i], _parent, false);
     }
   }
   for (int i = 0; i < 3; i++) {
@@ -373,11 +412,9 @@ draws_bars::~draws_bars() { delete layout; }
 ///////////////////////////////////////////////////////////////////
 
 loqhness::~loqhness() {
-  free(hands);
-  array2_free_cardmask(player, ACTORS);
-  free(board);
-  array2_free_i(board_enumed_hand, boards);
-  free(board_enumed_hands);
+  delete[] player_label;
+  delete[] hands_edit;
+  delete[] tab_player;
 }
 
 int main(int argc, char *argv[]) {

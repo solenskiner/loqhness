@@ -38,6 +38,22 @@ extern "C" {
 #define EVALFLAGS ITERATIONS_SET(10000)
 #define ACTORS 9
 
+/// subclass of QLineEdit for focusIn(int) signal, for player cards, matches tab index in tabs
+class line_edit : public QLineEdit {
+  Q_OBJECT
+  public:
+    line_edit(QWidget* _parent = 0) { _n++; _i = _n; }
+  signals:
+  void focusIn(int _i);
+  public slots:
+  protected:
+    void focusInEvent(QFocusEvent * _event) { emit focusIn(_i); }
+  private:
+  int _i;
+  static int _n;
+};
+
+/// Widget for displaying hand classes as progressbars.
 class hand_classes_bars {
   public:
     QLayout* getLayout();
@@ -53,7 +69,9 @@ class hand_classes_bars {
   //
 };
 
-class draws_bars {
+/// Widget for displaying draws.
+class draws_bars : public QWidget {
+  Q_OBJECT
   public:
     QLayout* getLayout();
     draws_bars(QWidget * parent, bool showLabels);
@@ -69,6 +87,7 @@ class draws_bars {
   //
 };
 
+/// Widget which contains and shows player data
 class tab_player_t : public QWidget {
   Q_OBJECT
   public:
@@ -93,6 +112,9 @@ class tab_player_t : public QWidget {
     QLabel      * strenght_board_label;
     QProgressBar* strenght_board;
 
+    QLabel      * draws_bar_label;
+    QProgressBar* draws_bar;
+
     draws_bars  * draws;
 
     QSpacerItem * spacer;
@@ -100,6 +122,30 @@ class tab_player_t : public QWidget {
   friend class tab_overview_t;
 };
 
+/// Widget which contains and shows board data
+class tab_board_t : public QWidget {
+  Q_OBJECT
+  public:
+    tab_board_t(QWidget* _parent);
+    void clear();
+  signals:
+    void cards_changed(int _hands_num);
+    void cards_changed(QString _hands_num);
+  public slots:
+    void update_cards();
+  private:
+    QString          old_cards;
+    StdDeck_CardMask * cards;
+    int cards_num;
+
+    QGridLayout * layout;
+
+    QSpacerItem * spacer;
+  //
+  friend class tab_overview_t;
+};
+
+/// Widget which shows an overview of several tab_player_t widgets.
 class tab_overview_t : public QWidget {
   Q_OBJECT
   public:
@@ -130,6 +176,7 @@ class tab_overview_t : public QWidget {
   //
 };
 
+/// Application main dialog
 class loqhness : public QDialog {
   Q_OBJECT
   public:
@@ -148,23 +195,16 @@ class loqhness : public QDialog {
 
     QGridLayout * layout;
     QLabel * cards_label;
-    QLabel * player_label[ACTORS];
-    QLineEdit * hands_edit[ACTORS];
-    StdDeck_CardMask** player;
-    int* hands;
-    int players;
+    QLabel ** player_label;
+    line_edit ** hands_edit;
 
     QLabel * board_label;
-    QLineEdit * board_edit;
-    StdDeck_CardMask* board;
-    int boards;
-    int* board_enumed_hands;
-    int** board_enumed_hand;
+    line_edit * board_edit;
 
     QTabWidget* tabs;
     tab_overview_t* tab_overview;
-    tab_player_t* tab_player[ACTORS];
-    QWidget* tab_board;
+    tab_player_t** tab_player;
+    tab_board_t* tab_board;
 
     QHBoxLayout * calc;
     QPushButton * calc_board;
