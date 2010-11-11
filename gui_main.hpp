@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QProgressBar>
+#include <QSpacerItem>
 
 extern "C" {
   #include <poker-eval/poker_defs.h>
@@ -72,15 +73,28 @@ class tab_player_t : public QWidget {
   Q_OBJECT
   public:
     tab_player_t(QWidget* _parent);
-    void update(float _equity, float** _draws);
+    void update(float _equity, int* _boards, int _boards_num);
     void clear();
   signals:
-  private slots:
+    void hands_changed(int _hands_num);
+  public slots:
+    void update_hands();
   private:
+    QString          old_hands;
+    StdDeck_CardMask * hands;
+    int hands_num;
+
+    QGridLayout * layout;
+
     QLabel      * equity_label;
     QProgressBar* equity;
+
+    QLabel      * strenght_board_label;
+    QProgressBar* strenght_board;
+
     draws_bars  * draws;
-    QGridLayout * layout;
+
+    QSpacerItem * spacer;
   //
   friend class tab_overview_t;
 };
@@ -88,18 +102,30 @@ class tab_player_t : public QWidget {
 class tab_overview_t : public QWidget {
   Q_OBJECT
   public:
-    tab_overview_t(QWidget* _parent, tab_player_t* tab_player[]);
+    tab_overview_t(QWidget* _parent, tab_player_t** tab_player, int players);
+    ~tab_overview_t();
   signals:
   private slots:
   private:
     QGridLayout * layout;
+
     QLabel      * equity_label;
-    QLabel      * hands_label[ACTORS];
-    QLabel      * player_label[ACTORS];
-    QProgressBar* equity[ACTORS];
+    QLabel      * strength_label;
+    QLabel      * draws_label;
+    QLabel      * hands_num_label;
+
+    QLabel      ** player_label;
+    QProgressBar** equity;
+    QProgressBar** strength;
+    QProgressBar** draws;
+    QLabel      ** hands_num;
+
     QLabel      * board_label;
-    QLabel      * comb_label;
-    QLabel      * boards_label;
+    QLabel      * boards_num_label;
+    QLabel      * combs_label;
+    QLabel      * combs_num_label;
+
+    QSpacerItem * spacer;
   //
 };
 

@@ -57,37 +57,104 @@ tab_player_t::tab_player_t(QWidget* _parent) {
   equity         = new QProgressBar(this);
   layout->addWidget(equity, 0, 1);
 
+  strenght_board_label   = new QLabel("Strength: ", this);
+  layout->addWidget(strenght_board_label, 1, 0);
+
+  strenght_board = new QProgressBar(this);
+  layout->addWidget(strenght_board, 1, 1);
+
   draws          = new draws_bars(this, true);
   layout->addLayout(draws->getLayout(), 3, 0, 1, 2);
+
+  spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+  layout->addItem(spacer, 4, 0);
 }
 void tab_player_t::clear() {
   equity->setEnabled(false);
+  strenght_board->setEnabled(false);
   draws->clear();
 }
-void tab_player_t::update(float _equity, float** _draws) {
+void tab_player_t::update(float _equity, int* _boards, int _boards_num) {
   equity->setValue(_equity);
   equity->setEnabled(true);
+  //strenght_board->setValue(_board);
+  //strenght_board->setEnabled(true);
   //_draws->update();
 }
 
+void tab_player_t::update_hands() {
+  if (((QLineEdit*) (QObject::sender()))->text() == old_hands)
+    goto t_p_upd_end;
 
-tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t * tab_player[]) {
+  old_hands = ((QLineEdit*) QObject::sender())->text();
+  free(hands);
+  hands =  parse(const_cast<char*>(old_hands.toStdString().c_str()), &hands_num);
+
+  clear();
+  emit hands_changed(hands_num);
+
+  t_p_upd_end:
+  return;
+}
+
+
+
+tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t ** tab_player, int players) {
   layout = new QGridLayout(this);
   layout->setSpacing(2);
 
   equity_label = new QLabel("Equity: ", this);
   layout->addWidget(equity_label, 0, 1);
-  comb_label = new QLabel("Hands: ", this);
-  layout->addWidget(comb_label, 0, 2);
+  strength_label = new QLabel("Strength: ", this);
+  layout->addWidget(strength_label, 0, 2);
+  strength_label = new QLabel("Draws: ", this);
+  layout->addWidget(strength_label, 0, 3);
+  hands_num_label = new QLabel("Hands: ", this);
+  layout->addWidget(hands_num_label, 0, 4);
 
-  for (int i = 0; i < ACTORS; i++) {
+  player_label = new QLabel*[players];
+  equity = new QProgressBar*[players];
+  strength = new QProgressBar*[players];
+  draws = new QProgressBar*[players];
+  hands_num = new QLabel*[players];
+
+  for (int i = 0; i < players; i++) {
     player_label[i] = new QLabel(QString::fromStdString("Player " + itos(i + 1) + ": "), this);
     layout->addWidget(player_label[i], i + 1, 0);
-    equity[i] = tab_player[i]->equity;
-    layout->addWidget(equity[1], i + 1, 1);
+
+    equity[i] = new QProgressBar(this);
+    layout->addWidget(equity[i], i + 1, 1);
+
+    strength[i] = new QProgressBar(this);
+    layout->addWidget(strength[i], i + 1, 2);
+
+    draws[i] = new QProgressBar(this);
+    layout->addWidget(draws[i], i + 1, 3);
+
+    hands_num[i] = new QLabel(this);
+    layout->addWidget(hands_num[i], i + 1, 4);
+
   }
-  board_label = new QLabel("Board: ", this);
-  layout->addWidget(board_label, ACTORS + 2, 0);
+
+  board_label = new QLabel("Boards: ", this);
+  layout->addWidget(board_label, players + 2, 0);
+  boards_num_label = new QLabel(this);
+  layout->addWidget(boards_num_label, players + 2, 4);
+
+  combs_label = new QLabel("Combinations: ", this);
+  layout->addWidget(combs_label, players + 3, 0);
+  combs_num_label = new QLabel(this);
+  layout->addWidget(combs_num_label, players + 3, 4);
+
+  spacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+  layout->addItem(spacer, players + 4, 0);
+}
+tab_overview_t::~tab_overview_t() {
+  delete[] player_label;
+  delete[] equity;
+  delete[] strength;
+  delete[] draws;
+  delete[] hands_num;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -122,7 +189,7 @@ loqhness::loqhness() {
   for (int i = 0; i < ACTORS; i++) {
     tab_player[i] = new tab_player_t(this);
   }
-  tab_overview = new tab_overview_t(this, tab_player);
+  tab_overview = new tab_overview_t(this, tab_player, ACTORS);
   tabs->addTab(tab_overview, "Overview");
   for (int i = 0; i < ACTORS; i++) {
     tabs->addTab(tab_player[i], QString::fromStdString("Player " + itos(i + 1)));
