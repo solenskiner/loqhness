@@ -92,6 +92,7 @@ void tab_player_t::update_hands() {
 
   clear();
   emit hands_changed(hands_num);
+  emit hands_changed(QString::fromStdString(itos(hands_num)));
 
   t_p_upd_end:
   return;
@@ -124,16 +125,19 @@ tab_overview_t::tab_overview_t(QWidget *_parent, tab_player_t ** tab_player, int
 
     equity[i] = new QProgressBar(this);
     layout->addWidget(equity[i], i + 1, 1);
+    connect(tab_player[i]->equity, SIGNAL(valueChanged(int)), equity[i], SLOT(setValue(int)));
 
     strength[i] = new QProgressBar(this);
     layout->addWidget(strength[i], i + 1, 2);
+    connect(tab_player[i]->strenght_board, SIGNAL(valueChanged(int)), strength[i], SLOT(setValue(int)));
 
     draws[i] = new QProgressBar(this);
     layout->addWidget(draws[i], i + 1, 3);
+    // some way to update this.
 
     hands_num[i] = new QLabel(this);
     layout->addWidget(hands_num[i], i + 1, 4);
-
+    connect(tab_player[i], SIGNAL(hands_changed(QString)), hands_num[i], SLOT(setText(QString)));
   }
 
   board_label = new QLabel("Boards: ", this);
@@ -161,40 +165,39 @@ tab_overview_t::~tab_overview_t() {
 
 /// sets up main gui and signal handlers.
 loqhness::loqhness() {
-  main = new QVBoxLayout(this);
-  main->setSpacing(2);
+  layout = new QGridLayout(this);
+  layout->setSpacing(2);
 
-  // set up UI line edits
-  lines = new QGridLayout();
-  lines->setSpacing(2);
   cards_label = new QLabel("Cards:", this);
-  lines->addWidget(cards_label, 0, 1);
+  layout->addWidget(cards_label, 0, 1);
+
+  tabs = new QTabWidget(this);
+
   for (int i = 0; i < ACTORS; i++) {
     player_label[i] = new QLabel(this);
     player_label[i]->setText(QString::fromStdString("Player &" + itos(i+1) + ":"));
     hands_edit[i] = new QLineEdit(this);
     player_label[i]->setBuddy(hands_edit[i]);
-    lines->addWidget(player_label[i], i+1, 0);
-    lines->addWidget(hands_edit[i], i+1, 1);
-  }
-  board_label = new QLabel("&Board:", this);
-  board_edit = new QLineEdit(this);
-  board_label->setBuddy(board_edit);
-  lines->addWidget(board_label, ACTORS+1, 0);
-  lines->addWidget(board_edit, ACTORS+1, 1);
-  main->addLayout(lines);
+    layout->addWidget(player_label[i], i+1, 0);
+    layout->addWidget(hands_edit[i], i+1, 1);
 
-  // set up UI displays
-  tabs = new QTabWidget(this);
-  for (int i = 0; i < ACTORS; i++) {
     tab_player[i] = new tab_player_t(this);
+    connect(hands_edit[i], SIGNAL(editingFinished()), tab_player[i], SLOT(update_hands()));
   }
+
   tab_overview = new tab_overview_t(this, tab_player, ACTORS);
   tabs->addTab(tab_overview, "Overview");
   for (int i = 0; i < ACTORS; i++) {
     tabs->addTab(tab_player[i], QString::fromStdString("Player " + itos(i + 1)));
   }
-  main->addWidget(tabs);
+
+  board_label = new QLabel("&Board:", this);
+  board_edit = new QLineEdit(this);
+  board_label->setBuddy(board_edit);
+  layout->addWidget(board_label, ACTORS+1, 0);
+  layout->addWidget(board_edit, ACTORS+1, 1);
+
+  layout->addWidget(tabs, ACTORS + 2, 0, 1, 2);
 
   // set up UI buttons
   calc = new QHBoxLayout();
@@ -205,24 +208,19 @@ loqhness::loqhness() {
   calc->addWidget(calc_draws);
   calc->addWidget(calc_board);
   calc->addWidget(calc_equity);
-  main->addLayout(calc);
+  layout->addLayout(calc, ACTORS + 3, 0, 1, 2);
 
-  // connect signals and slots
-  connect(board_edit, SIGNAL(editingFinished()), this, SLOT(update_board()));
-  for (int i = 0; i < ACTORS; i++) {
-    connect(hands_edit[i], SIGNAL(editingFinished()), this, SLOT(update_cards()));
-  }
   connect(calc_board,  SIGNAL(clicked()), this, SLOT(calc_board_clicked()));
   connect(calc_draws,  SIGNAL(clicked()), this, SLOT(calc_draws_clicked()));
   connect(calc_equity, SIGNAL(clicked()), this, SLOT(calc_equity_clicked()));
 
   // init private data
-  hands = (int*) malloc(sizeof(int) * ACTORS);
-  player = (StdDeck_CardMask**) malloc(sizeof(StdDeck_CardMask*) * ACTORS);
-  for (int i = 0; i < ACTORS; i++) {
-    player[i] = (StdDeck_CardMask*) malloc(sizeof(StdDeck_CardMask));
-  }
-  board = (StdDeck_CardMask*) malloc(sizeof(StdDeck_CardMask));
+  //hands = (int*) malloc(sizeof(int) * ACTORS);
+  //player = (StdDeck_CardMask**) malloc(sizeof(StdDeck_CardMask*) * ACTORS);
+  //for (int i = 0; i < ACTORS; i++) {
+    //player[i] = (StdDeck_CardMask*) malloc(sizeof(StdDeck_CardMask));
+  //}
+  //board = (StdDeck_CardMask*) malloc(sizeof(StdDeck_CardMask));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

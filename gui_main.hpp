@@ -77,6 +77,7 @@ class tab_player_t : public QWidget {
     void clear();
   signals:
     void hands_changed(int _hands_num);
+    void hands_changed(QString _hands_num);
   public slots:
     void update_hands();
   private:
@@ -145,9 +146,7 @@ class loqhness : public QDialog {
     void update_equities(float* equities, int players);
     void clear_equities();
 
-    QVBoxLayout * main;
-
-    QGridLayout * lines;
+    QGridLayout * layout;
     QLabel * cards_label;
     QLabel * player_label[ACTORS];
     QLineEdit * hands_edit[ACTORS];
