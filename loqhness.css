@@ -12,7 +12,7 @@ body {
   background-color:#610F1E;
 }
 
-.description { font-size: 14px; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+.description { font-size: 16px; font-style: italic;}
 .download { float: right; }
 .footer { text-align:center; padding-top:30px; font-style: italic; font-size: 10px; }
 
