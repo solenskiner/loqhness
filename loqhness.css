@@ -1,0 +1,67 @@
+body {
+  background-color:#000000;
+  font-size: 12px;
+  font-family: "Helvetica,Arial,FreeSans";
+  color: #ffffff;
+}
+
+.container {
+  padding:20px;
+  margin: auto;
+  width: 700px;
+  background-color:#610F1E;
+}
+
+.description { font-size: 14px; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+.download { float: right; }
+.footer { text-align:center; padding-top:30px; font-style: italic; }
+
+a         { color:#FFFFFF;   font-weight: bold; text-decoration: none;}
+h1        { font-size: 50px; font-weight: normal; }
+h1 .small { font-size: 20px; }
+h1 a      {                  text-transform:uppercase; }
+h2        { font-size: 14px; font-weight: bold; text-indent: 20px; }
+
+
+.terminal:before {
+  background: transparent url(tr.png) scroll no-repeat top right;
+ /* margin-bottom: -12px;*/
+  height: 39px;
+  display: block;
+  border: none;
+  content: url(tl.png);
+/*  padding: 0;
+  line-height: 0.1;
+  font-size: 1px;*/
+}
+
+.terminal {
+  margin: 16px;
+  padding: 0px;
+  background-color:#332D29;
+  margin:0px;
+  font-size:8px;
+  color:#D9D9B8;
+  font-family:"Inconsolata", "Lucida Consol", monospace;
+}
+
+.terminal h2        {color:#6AC358;}
+.terminal h1        {color:#B34747;}
+.terminal p         {color:#D9D9B8;}
+.terminal a:link    {color:#5F7E9E; font-weight: bold;}
+.terminal a:visited {color:#995C86; font-weight: bold;}
+.terminal a:hover   {color:#8FA5BF; font-weight: bold;}
+.terminal a:active  {color:#8FA5BF; font-weight: bold;}
+
+.terminal:after {
+  background: transparent url(br.png) scroll no-repeat top right;
+  margin-bottom: -5x;
+  height: 5px;
+  display: block;
+  border: none;
+  content: url(bl.png);
+  padding: 0;
+  line-height: 0.1;
+  font-size: 1px;
+}
+
