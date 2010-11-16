@@ -14,14 +14,14 @@ body {
 
 .description { font-size: 14px; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
 .download { float: right; }
-.footer { text-align:center; padding-top:30px; font-style: italic; }
+.footer { text-align:center; padding-top:30px; font-style: italic; font-size: 10px; }
 
 a         { color:#FFFFFF;   font-weight: bold; text-decoration: none;}
 h1        { font-size: 50px; font-weight: normal; }
 h1 .small { font-size: 20px; }
 h1 a      {                  text-transform:uppercase; }
 h2        { font-size: 14px; font-weight: bold; text-indent: 20px; }
-
+h2 .small { font-size: 12px; font-weight: normal; text-indent: 0px; }
 
 .terminal:before {
   background: transparent url(tr.png) scroll no-repeat top right;
@@ -40,7 +40,7 @@ h2        { font-size: 14px; font-weight: bold; text-indent: 20px; }
   padding: 0px;
   background-color:#332D29;
   margin:0px;
-  font-size:8px;
+  font-size:10px;
   color:#D9D9B8;
   font-family:"Inconsolata", "Lucida Consol", monospace;
 }
