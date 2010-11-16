@@ -3,13 +3,15 @@ body {
   font-size: 12px;
   font-family: "Helvetica,Arial,FreeSans";
   color: #ffffff;
-  margin:0;
-  padding:0;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
 }
 
 .container {
   padding:20px;
   margin: auto;
+  border: 0px;
   width: 700px;
   background-color:#610F1E;
 }
@@ -46,13 +48,14 @@ h2 .small { font-size: 12px; font-weight: normal; text-indent: 0px; }
   font-family:"Inconsolata", "Lucida Consol", monospace;
 }
 
-.terminal h2        {color:#6AC358;}
-.terminal h1        {color:#B34747;}
-.terminal p         {color:#D9D9B8;}
-.terminal a:link    {color:#5F7E9E; font-weight: bold;}
-.terminal a:visited {color:#995C86; font-weight: bold;}
-.terminal a:hover   {color:#8FA5BF; font-weight: bold;}
-.terminal a:active  {color:#8FA5BF; font-weight: bold;}
+.terminal h2        { color:#6AC358; font-weight: bold; text-transform:uppercase; }
+.terminal h1        { color:#B34747; font-weight: bold; text-transform:uppercase; }
+.terminal p         { color:#D9D9B8; }
+.terminal a         { font-weight: bold; text-decoration: underline; }
+.terminal a:link    { color:#5F7E9E; }
+.terminal a:visited { color:#995C86; }
+.terminal a:hover   { color:#8FA5BF; }
+.terminal a:active  { color:#8FA5BF; }
 
 .terminal:after {
   background: transparent url(br.png) scroll no-repeat top right;
