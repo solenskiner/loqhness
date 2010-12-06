@@ -1,6 +1,14 @@
-INSTALLATION
-============
-qmake
-make
-sudo make install
+Install
+=======
+Compile the project by running:
 
+qmake
+./configure
+make
+
+Dependencies
+============
+libpoker-eval
+qt
+
+Authors: solenskiner <solenskiner@gmail.com>
