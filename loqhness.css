@@ -16,13 +16,13 @@ body {
   background-color:#610F1E;
 }
 
-.description { font-size: 16px; font-style: italic; padding-bottom:30px; }
+.description { font-size: 16px; font-style: italic; padding-bottom:30px; font-family: "Times New Roman" }
 .footer      { font-size: 10px; font-style: italic; padding-top:30px; text-align:center; }
 
-a         { color:#FFFFFF;   font-weight: bold; text-decoration: none;}
+a         { color:#FFFFFF;   font-weight: bold; }
 h1        { font-size: 50px; font-weight: normal; }
 h1 .small { font-size: 20px; }
-h1 a      {                  text-transform:uppercase; }
+h1 a      {                  text-transform:uppercase; text-decoration: none;}
 h2        { font-size: 14px; font-weight: bold; text-indent: 20px; }
 h2 .small { font-size: 12px; font-weight: normal; text-indent: 0px; }
 
