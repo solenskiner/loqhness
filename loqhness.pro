@@ -55,7 +55,6 @@ HEADERS += \
     eval_equity.h \
     eval_single.h \
     gui_main.hpp \
-    gui_types.hpp \
     misc_bitoperations.h \
     misc_helpers.h \
     misc_bool.h \
@@ -65,7 +64,6 @@ SOURCES += \
     eval_board.c \
     eval_equity.c \
     eval_single.c \
-    gui_types.cpp \
     gui_main.cpp \
     misc_bitoperations.c \
     misc_helpers.c \
